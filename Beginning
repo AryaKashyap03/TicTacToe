@@ -1,0 +1,68 @@
+#include <bits/stdc++.h>
+using namespace std; 
+int main(){
+    cout<<"Welcome to my Tic Tac Toe game"<<endl;
+    cout<<"Choose hardness Level: Easy or Hard"<<endl;
+    string level;
+    cin>>level;
+    transform(level.begin(), level.end(), level.begin(), ::tolower);
+    int turns=5;
+    if(level=="hard"){
+    int row,col;
+    char input;
+    char board[3][3]={{'*','*','*'},{'*','*','*'},{'*','*','*'}};
+    while(turns>0){
+    cout<<"Enter row and coloumn and your input:"<<endl;
+    cin>>row>>col;
+    if(board[row][col]=='*'){
+                cin>>input;
+            }
+    else{
+        cout<<"Input valid values of row and column:"<<endl;
+        cin>>row>>col;
+        if(board[row][col]!='*'){
+                cout<<"Try again"<<endl;
+                cin>>row>>col;
+                if(board[row][col]!='*'){
+                    cout<<"Bhai rules seekh kar aa"<<endl;
+                    exit(1);
+                }
+                cin>>input;
+            }
+    }
+    board[row][col]=input;
+    for(int i=0;i<3;i++){
+        for(int j=0;j<3;j++){
+            cout<<board[i][j];
+        }
+        cout<<endl;
+    }
+    if(turns!=1){
+    cout<<"Now my turn"<<endl;
+    if(board[1][1]=='1'){
+        board[0][0]='0';
+        if(board[0][2]=='1'){
+            board[2][0]='0';
+            if(board[1][0]=='1'){
+                board[1][2]='0';
+                if(board[0][1]=='1'){
+                    board[2][1]='0';
+                }
+                
+            }
+            
+        }
+    }
+    for(int i=0;i<3;i++){
+        for(int j=0;j<3;j++){
+            cout<<board[i][j];
+        }
+        cout<<endl;
+    }
+        
+    }
+    turns=turns-1;
+    }
+    
+}
+}
