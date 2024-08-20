@@ -1,0 +1,194 @@
+#include <bits/stdc++.h>
+using namespace std; 
+char board[3][3]={{'*','*','*'},{'*','*','*'},{'*','*','*'}};
+int checkrow();
+int checkcol();
+bool checkrowresult();
+bool checkcolresult();
+int star();
+int main(){
+    cout<<"Welcome to my Tic Tac Toe game"<<endl;
+    cout<<"Choose hardness Level: Easy or Hard"<<endl;
+    string level;
+    cin>>level;
+    transform(level.begin(), level.end(), level.begin(), ::tolower);
+    int turns=5;
+    if(level=="hard"){
+    int row,col;
+    char input;
+    while(turns>0){
+    cout<<"Enter row and coloumn and your input:"<<endl;
+    cin>>row>>col;
+    if(board[row][col]=='*'){
+                cin>>input;
+            }
+    else{
+        cout<<"Input valid values of row and column:"<<endl;
+        cin>>row>>col;
+        if(board[row][col]!='*'){
+                cout<<"Try again"<<endl;
+                cin>>row>>col;
+                if(board[row][col]!='*'){
+                    cout<<"Bhai rules seekh kar aa"<<endl;
+                    exit(1);
+                }
+                cin>>input;
+            }
+    }
+    board[row][col]=input;
+    for(int i=0;i<3;i++){
+        for(int j=0;j<3;j++){
+            cout<<board[i][j];
+        }
+        cout<<endl;
+    }
+    if(turns!=1){
+    cout<<"Now my turn"<<endl;
+    if(board[1][1]=='1'){
+        board[0][0]='0';
+        if(board[0][2]=='1'){
+            board[2][0]='0';
+            if(board[1][0]=='1'){
+                board[1][2]='0';
+                if(board[0][1]=='1'){
+                    board[2][1]='0';
+                }
+                
+            }
+            if(board[1][0]=='*'&& star()==4){
+                board[1][0]='0';
+            }
+            
+        }
+    }
+                
+    for(int i=0;i<3;i++){
+        for(int j=0;j<3;j++){
+            cout<<board[i][j];
+        }
+        cout<<endl;
+    }
+    if(checkrowresult() ){
+            cout<<"Computer won!";
+            exit(0);
+        }
+    if(checkcolresult() ){
+            cout<<"Computer won!";
+            exit(0);
+        }
+        
+    
+        
+    }
+    turns=turns-1;
+    }
+    
+    int check_row =checkrow();
+    if(check_row==0){
+        cout<<"Computer won!"<<endl;
+    }
+    else if(check_row==2){
+        cout<<"Game ended in a draw!"<<endl;
+    }
+    
+}
+}
+int checkrow(){
+    int one=0,zero=0;
+     for(int i=0;i<3;i++){
+        for(int j=0;j<3;j++){
+            if(board[i][j]=='0'){
+                zero+=1;
+            }
+        }
+    }
+    if(zero==3){
+        return 0;
+    }
+    else{
+        return 2;
+    }
+}
+int checkcol(){
+    int one=0,zero=0;
+     for(int i=0;i<3;i++){
+        for(int j=0;j<3;j++){
+            if(board[j][i]=='0'){
+                zero+=1;
+            }
+        }
+    }
+    if(zero==3){
+        return 0;
+    }
+    else{
+        return 2;
+    }
+}
+bool checkrowresult(){
+    if (board[0][0] == board[0][1] && 
+        board[0][1] == board[0][2] && 
+        board[0][0] != '*') {
+        return true;
+    }
+
+
+    if (board[1][0] == board[1][1] && 
+        board[1][1] == board[1][2] && 
+        board[1][0] != '*') {
+        return true;
+    }
+
+  
+    if (board[2][0] == board[2][1] && 
+        board[2][1] == board[2][2] && 
+        board[2][0] != '*') {
+        return true;
+    }
+
+   
+    return false;
+}
+
+
+bool checkcolresult(){
+     if (board[0][0] == board[1][0] && 
+        board[1][0] == board[2][0] && 
+        board[0][0] != '*') {
+        return true;
+    }
+
+    
+    if (board[0][1] == board[1][1] && 
+        board[1][1] == board[2][1] && 
+        board[0][1] != '*') {
+        return true;
+    }
+
+    
+    if (board[0][2] == board[1][2] && 
+        board[1][2] == board[2][2] && 
+        board[0][2] != '*') {
+        return true;
+    }
+
+    
+    return false;
+}
+int star(){
+    int counter=0;
+    for(int i=0;i<3;i++){
+        for(int j=0;j<3;j++){
+            if(board[i][j]=='*'){
+                counter+=1;
+            }
+            
+        }
+        
+    }
+    if(counter==4){
+        return 4;
+    }
+    else 
+    return 0;
+}
