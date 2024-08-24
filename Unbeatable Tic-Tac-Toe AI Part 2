@@ -1,0 +1,640 @@
+#include <bits/stdc++.h>
+#include <cstdlib>
+#include <ctime>
+using namespace std; 
+char board[3][3]={{'*','*','*'},{'*','*','*'},{'*','*','*'}};
+int checkrow();
+int checkcol();
+bool checkrowresult();
+bool checkcolresult();
+int main(){
+    cout<<"Welcome to my Tic Tac Toe game"<<endl;
+    cout<<"Choose hardness Level: Easy or Hard"<<endl;
+    string level;
+    cin>>level;
+    transform(level.begin(), level.end(), level.begin(), ::tolower);
+    int turns=5;
+    if(level=="hard"){
+    int row,col;
+    char input;
+    bool firstmove = false;
+    bool justonce= false;
+    while(turns>0){
+    cout<<"Enter row and coloumn and your input:"<<endl;
+    cin>>row>>col;
+    if(board[row][col]=='*'){
+                cin>>input;
+            }
+    else{
+        cout<<"Input valid values of row and column:"<<endl;
+        cin>>row>>col;
+        if(board[row][col]!='*'){
+                cout<<"Try again"<<endl;
+                cin>>row>>col;
+                if(board[row][col]!='*'){
+                    cout<<"Bhai rules seekh kar aa"<<endl;
+                    exit(1);
+                }
+                cin>>input;
+            }
+    }
+    board[row][col]=input;
+    for(int i=0;i<3;i++){
+        for(int j=0;j<3;j++){
+            cout<<board[i][j];
+        }
+        cout<<endl;
+    }
+    if(turns!=1){
+    cout<<"Now my turn"<<endl;
+    //case1
+    bool moveMade = false;
+    int x =time(0);
+    srand(x);
+    int randomvalue= 1+rand()%4;
+    if(board[1][1]=='1'){
+        if(randomvalue==1&& !firstmove){
+            board[0][0]='0';
+            firstmove=true;}
+        else if(randomvalue==2&& !firstmove){
+            board[0][2]='0';
+            firstmove=true;
+        }
+        else if(randomvalue==3&& !firstmove){
+            board[2][0]='0';
+            firstmove=true;
+        }
+        else if(randomvalue==4&& !firstmove){
+            board[2][2]='0';
+            firstmove=true;
+        }
+        //added priority checker for row combinations
+        for(int i=0;i<3;i++){
+        int j=0;
+        if((((board[i][j]==board[i][j+2]) && (board[i][j]!='*'&&board[i][j]=='0'))||((board[i][j]==board[i][j+1])&& (board[i][j]!='*'&&board[i][j]=='0'))||((board[i][j+1]==board[i][j+2])&& (board[i][j+1]!='*'&&board[i][j+1]=='0')))&& !moveMade){
+        for(int k=0;k<3;k++){
+            if(board[i][k]=='*'){
+                board[i][k]='0';
+                moveMade=true;
+                break;
+            }
+        }
+        if(moveMade==true){
+            break;
+        }
+    }
+    }
+        //priority checker for column combinations
+         for(int j = 0; j < 3; j++){
+         int i = 0;
+         if((((board[i][j] == board[i+2][j]) && (board[i][j] != '*' && board[i][j] == '0')) || 
+        ((board[i][j] == board[i+1][j]) && (board[i][j] != '*' && board[i][j] == '0')) || 
+        ((board[i+1][j] == board[i+2][j]) && (board[i+1][j] != '*' && board[i+1][j] == '0'))) && 
+        !moveMade) {
+
+        for(int k = 0; k < 3; k++) {
+            if(board[k][j] == '*') {
+                board[k][j] = '0';
+                moveMade = true;
+                break;
+            }
+        }
+
+        if(moveMade == true) {
+            break;
+        }
+        }
+     }
+
+            
+        if((((board[0][0]==board[0][2])&& (board[0][0]!='*'))||((board[0][0]==board[0][1]&& board[0][0]!='*'))||((board[0][1]==board[0][2]&& board[0][1]!='*')))&& !moveMade){
+            for(int i=0;i<3;i++){
+                if(board[0][i]=='*'){
+                    board[0][i]='0';
+                    moveMade = true;
+                    break;
+                }
+            }
+        }
+        // added code
+        // Check Row 1
+ 
+        // Check Row 1
+        if ((((board[1][0] == board[1][2]) && (board[1][0] != '*' ))|| 
+           ((board[1][0] == board[1][1]) && (board[1][0] != '*')) || 
+           ((board[1][1] == board[1][2]) && (board[1][1] != '*'))) && !moveMade) {
+        for (int i = 0; i < 3; i++) {
+        if (board[1][i] == '*') {
+            board[1][i] = '0';// pc=1
+            moveMade = true;
+            break;
+          }
+        }
+      }
+
+// Check Row 2
+        if ((((board[2][0] == board[2][2] && board[2][0] != '*')) || 
+          ((board[2][0] == board[2][1] && board[2][0] != '*')) || 
+          ((board[2][1] == board[2][2] && board[2][1] != '*'))) && !moveMade) {
+        for (int i = 0; i < 3; i++) {
+           if (board[2][i] == '*') {
+            board[2][i] = '0';//pc=2
+            moveMade = true;
+            break;
+            }
+        }
+        }
+// Check Column 0
+        if ((board[0][0] == board[2][0] && board[0][0] != '*' || 
+         board[0][0] == board[1][0] && board[0][0] != '*' || 
+         board[1][0] == board[2][0] && board[1][0] != '*') && !moveMade) {
+        for (int i = 0; i < 3; i++) {
+           if (board[i][0] == '*') {
+            board[i][0] = '0';
+            moveMade = true;
+            break;
+            }
+        }
+        }
+
+// Check Column 1
+        if ((board[0][1] == board[2][1] && board[0][1] != '*' || 
+          board[0][1] == board[1][1] && board[0][1] != '*' || 
+          board[1][1] == board[2][1] && board[1][1] != '*') && !moveMade) {
+        for (int i = 0; i < 3; i++) {
+             if (board[i][1] == '*') {
+                board[i][1] = '0';
+                moveMade = true;
+                break;
+             }
+           }
+        }
+
+
+// Check Column 2
+        if ((board[0][2] == board[2][2] && board[0][2] != '*' || 
+          board[0][2] == board[1][2] && board[0][2] != '*' || 
+          board[1][2] == board[2][2] && board[1][2] != '*') && !moveMade) {
+         for (int i = 0; i < 3; i++) {
+             if (board[i][2] == '*') {
+                board[i][2] = '0';
+                moveMade = true;
+                break;
+             }
+            }
+        }
+        //Check the diagonal from top-left to bottom-right
+        if ((board[0][0] == board[1][1] && board[0][0] != '*' ||
+         board[0][0] == board[2][2] && board[0][0] != '*' ||
+         board[1][1] == board[2][2] && board[1][1] != '*') && !moveMade) {
+        for (int i = 0; i < 3; i++) {
+            if (board[i][i] == '*') {
+                board[i][i] = '0';
+                moveMade = true;
+                break;
+            }
+            
+        }
+    }
+
+    // Check the diagonal from top-right to bottom-left
+    if ((board[0][2] == board[1][1] && board[0][2] != '*' ||
+         board[0][2] == board[2][0] && board[0][2] != '*' ||
+         board[1][1] == board[2][0] && board[1][1] != '*') && !moveMade) {
+        for (int i = 0; i < 3; i++) {
+            if (board[i][2-i] == '*') {
+                board[i][2-i] = '0';
+                moveMade = true;
+                break;
+            }
+        }
+    }
+        if((((board[0][0]!=board[2][0])&& (board[0][0]!='*'&& board[2][0]!='*'))||((board[0][0]!=board[1][0])&& (board[0][0]!='*'&& board[1][0]!='*'))|| ((board[1][0]!=board[2][0])&& (board[1][0]!='*'&& board[2][0]!='*')))&& !moveMade){
+            for(int i=0;i<3;i++){
+                if(board[i][0]=='*'){
+                    board[i][0]='0';// 11,UR,22,01,20
+                    moveMade=true;
+                    break;
+                }
+            }
+            
+        }
+        if ((((board[0][1] != board[2][1]) && (board[0][1] != '*' && board[2][1] != '*')) || 
+           ((board[0][1] != board[1][1]) && (board[0][1] != '*' && board[1][1] != '*')) || 
+           ((board[1][1] != board[2][1]) && (board[1][1] != '*' && board[2][1] != '*'))) && !moveMade) {
+          for (int i = 0; i < 3; i++) {
+             if (board[i][1] == '*') {
+            board[i][1] = '0';
+            moveMade = true;
+            break;
+             }
+            }
+        }
+        if ((((board[0][2] != board[2][2]) && (board[0][2] != '*' && board[2][2] != '*')) || 
+           ((board[0][2] != board[1][2]) && (board[0][2] != '*' && board[1][2] != '*')) || 
+           ((board[1][2] != board[2][2]) && (board[1][2] != '*' && board[2][2] != '*'))) && !moveMade) {
+          for (int i = 0; i < 3; i++) {
+             if (board[i][2] == '*') {
+               board[i][2] = '0';
+               moveMade = true;
+               break;
+             }
+            }
+        }
+        if((((board[0][0]!=board[0][2])&& (board[0][0]!='*'&& board[0][2]!='*'))||((board[0][0]!=board[0][1])&& (board[0][0]!='*'&& board[0][1]!='*'))|| ((board[0][1]!=board[0][2])&& (board[0][1]!='*'&& board[0][2]!='*')))&& !moveMade){
+            for(int i=0;i<3;i++){
+               if(board[0][i]=='*'){
+                  board[0][i]='0';
+                  moveMade=true;
+                  break;
+                }
+            }
+        }
+
+        if((((board[1][0]!=board[1][2])&& (board[1][0]!='*'&& board[1][2]!='*'))||((board[1][0]!=board[1][1])&& (board[1][0]!='*'&& board[1][1]!='*'))|| ((board[1][1]!=board[1][2])&& (board[1][1]!='*'&& board[1][2]!='*')))&& !moveMade){
+            for(int i=0;i<3;i++){
+               if(board[1][i]=='*'){
+                  board[1][i]='0';
+                  moveMade=true;
+                  break;
+                }
+            }
+        }
+
+        if((((board[2][0]!=board[2][2])&& (board[2][0]!='*'&& board[2][2]!='*'))||((board[2][0]!=board[2][1])&& (board[2][0]!='*'&& board[2][1]!='*'))|| ((board[2][1]!=board[2][2])&& (board[2][1]!='*'&& board[2][2]!='*')))&& !moveMade){
+             for(int i=0;i<3;i++){
+                if(board[2][i]=='*'){
+                   board[2][i]='0';
+                   moveMade=true;
+                   break;
+                 }
+            }
+        }
+       if ((board[0][0] == board[1][1] && board[0][0] != '*' ||
+         board[0][0] == board[2][2] && board[0][0] != '*' ||
+         board[1][1] == board[2][2] && board[1][1] != '*') && !moveMade) {
+             for(int i=0;i<3;i++){
+             if(board[i][i]=='0'){
+                if(i+i==0){
+                    board[i][2]='0';
+                }
+                else if(i+i==4){
+                    board[i][0]='0';
+                }
+                moveMade = true;
+                break;
+            }
+                 
+             }
+         }
+         if ((board[0][2] == board[1][1] && board[0][2] != '*' ||
+         board[0][2] == board[2][0] && board[0][2] != '*' ||
+         board[1][1] == board[2][0] && board[1][1] != '*') && !moveMade) {
+        for (int i = 0; i < 3; i++) {
+                if((board[2][0]=='1'&& board[0][2]=='0')||(board[0][2]=='1'&& board[2][0]=='0' )){
+                    board[2][2]='0';
+                    moveMade = true;
+                    break;
+                }
+        }
+             
+         }
+        
+    
+    }
+    else if(board[0][1]=='1'||board[0][0]=='1'||board[0][2]=='1'||board[1][0]=='1'||board[1][2]=='1'||board[2][0]=='1'||board[2][1]=='1'||board[2][2]=='1'){
+       if(!moveMade && !justonce){
+        board[1][1]='0';
+        moveMade=true;
+        justonce=true;}
+        //preventing two paths for right diagonal
+        if((((board[0][2] != board[1][1]) && (board[0][2] != '*' && board[1][1] != '*')) ||
+         ((board[0][2] != board[2][0]) && (board[0][2] != '*' && board[2][0] != '*')) ||
+         ((board[1][1] != board[2][0]) && (board[1][1] != '*' && board[2][0] != '*'))) && !moveMade) {
+    
+           for(int i = 0; i < 3; i++) {
+             if(board[i][2-i] == '*') {
+               board[i][2-i] = '0';
+               moveMade = true;
+               break;
+             }
+            }
+        }
+         //preventing two paths for left diagonal
+        if((((board[0][0]!=board[1][1])&&(board[0][0]!='*'&&board[1][1]!='*'))||((board[0][0]!=board[2][2])&&(board[0][0]!='*'&&board[2][2]!='*'))||((board[1][1]!=board[2][2])&&(board[1][1]!='*'&&board[2][2]!='*')))&& !moveMade){
+            for(int i=0;i<3;i++){
+                if(board[i][i]=='*'){
+                    board[i][i]='0';
+                    moveMade=true;
+                    break;
+                }
+            }
+        }
+        //priority checker for rows
+       for(int i=0;i<3;i++){
+        int j=0;
+        if((((board[i][j]==board[i][j+2]) && (board[i][j]!='*'&&board[i][j]=='0'))||((board[i][j]==board[i][j+1])&& (board[i][j]!='*'&&board[i][j]=='0'))||((board[i][j+1]==board[i][j+2])&& (board[i][j+1]!='*'&&board[i][j+1]=='0')))&& !moveMade){
+        for(int k=0;k<3;k++){
+            if(board[i][k]=='*'){
+                board[i][k]='0';
+                moveMade=true;
+                break;
+            }
+        }
+        if(moveMade==true){
+            break;
+        }
+    }
+    }
+    //priority checker for columns
+    for(int j = 0; j < 3; j++){
+         int i = 0;
+         if((((board[i][j] == board[i+2][j]) && (board[i][j] != '*' && board[i][j] == '0')) || 
+        ((board[i][j] == board[i+1][j]) && (board[i][j] != '*' && board[i][j] == '0')) || 
+        ((board[i+1][j] == board[i+2][j]) && (board[i+1][j] != '*' && board[i+1][j] == '0'))) && 
+        !moveMade) {
+
+        for(int k = 0; k < 3; k++) {
+            if(board[k][j] == '*') {
+                board[k][j] = '0';
+                moveMade = true;
+                break;
+            }
+        }
+
+        if(moveMade == true) {
+            break;
+        }
+        }
+     }
+     
+        
+     //check for two 1's(rows)
+     if((((board[0][0]==board[0][2])&& (board[0][0]!='*'))||((board[0][0]==board[0][1]&& board[0][0]!='*'))||((board[0][1]==board[0][2]&& board[0][1]!='*')))&& !moveMade){
+            for(int i=0;i<3;i++){
+                if(board[0][i]=='*'){
+                    board[0][i]='0';
+                    moveMade = true;
+                    break;
+                }
+            }
+        }
+        // added code
+        // Check Row 1
+ 
+        // Check Row 1
+        if ((((board[1][0] == board[1][2]) && (board[1][0] != '*' ))|| 
+           ((board[1][0] == board[1][1]) && (board[1][0] != '*')) || 
+           ((board[1][1] == board[1][2]) && (board[1][1] != '*'))) && !moveMade) {
+        for (int i = 0; i < 3; i++) {
+        if (board[1][i] == '*') {
+            board[1][i] = '0';// pc=1
+            moveMade = true;
+            break;
+          }
+        }
+      }
+
+// Check Row 2
+        if ((((board[2][0] == board[2][2] && board[2][0] != '*')) || 
+          ((board[2][0] == board[2][1] && board[2][0] != '*')) || 
+          ((board[2][1] == board[2][2] && board[2][1] != '*'))) && !moveMade) {
+        for (int i = 0; i < 3; i++) {
+           if (board[2][i] == '*') {
+            board[2][i] = '0';//pc=2
+            moveMade = true;
+            break;
+            }
+        }
+        }
+        //check for two 1's (columns)
+        if ((board[0][0] == board[2][0] && board[0][0] != '*' || 
+         board[0][0] == board[1][0] && board[0][0] != '*' || 
+         board[1][0] == board[2][0] && board[1][0] != '*') && !moveMade) {
+        for (int i = 0; i < 3; i++) {
+           if (board[i][0] == '*') {
+            board[i][0] = '0';
+            moveMade = true;
+            break;
+            }
+        }
+        }
+
+// Check Column 1
+        if ((board[0][1] == board[2][1] && board[0][1] != '*' || 
+          board[0][1] == board[1][1] && board[0][1] != '*' || 
+          board[1][1] == board[2][1] && board[1][1] != '*') && !moveMade) {
+        for (int i = 0; i < 3; i++) {
+             if (board[i][1] == '*') {
+                board[i][1] = '0';
+                moveMade = true;
+                break;
+             }
+           }
+        }
+
+
+// Check Column 2
+        if ((board[0][2] == board[2][2] && board[0][2] != '*' || 
+          board[0][2] == board[1][2] && board[0][2] != '*' || 
+          board[1][2] == board[2][2] && board[1][2] != '*') && !moveMade) {
+         for (int i = 0; i < 3; i++) {
+             if (board[i][2] == '*') {
+                board[i][2] = '0';
+                moveMade = true;
+                break;
+             }
+            }
+        }
+       
+
+        //check for different elements in a row or column
+        if((((board[0][0]!=board[2][0])&& (board[0][0]!='*'&& board[2][0]!='*'))||((board[0][0]!=board[1][0])&& (board[0][0]!='*'&& board[1][0]!='*'))|| ((board[1][0]!=board[2][0])&& (board[1][0]!='*'&& board[2][0]!='*')))&& !moveMade){
+            for(int i=0;i<3;i++){
+                if(board[i][0]=='*'){
+                    board[i][0]='0';// 11,UR,22,01,20
+                    moveMade=true;
+                    break;
+                }
+            }
+            
+        }
+        if ((((board[0][1] != board[2][1]) && (board[0][1] != '*' && board[2][1] != '*')) || 
+           ((board[0][1] != board[1][1]) && (board[0][1] != '*' && board[1][1] != '*')) || 
+           ((board[1][1] != board[2][1]) && (board[1][1] != '*' && board[2][1] != '*'))) && !moveMade) {
+          for (int i = 0; i < 3; i++) {
+             if (board[i][1] == '*') {
+            board[i][1] = '0';
+            moveMade = true;
+            break;
+             }
+            }
+        }
+        if ((((board[0][2] != board[2][2]) && (board[0][2] != '*' && board[2][2] != '*')) || 
+           ((board[0][2] != board[1][2]) && (board[0][2] != '*' && board[1][2] != '*')) || 
+           ((board[1][2] != board[2][2]) && (board[1][2] != '*' && board[2][2] != '*'))) && !moveMade) {
+          for (int i = 0; i < 3; i++) {
+             if (board[i][2] == '*') {
+               board[i][2] = '0';
+               moveMade = true;
+               break;
+             }
+            }
+        }
+        if((((board[0][0]!=board[0][2])&& (board[0][0]!='*'&& board[0][2]!='*'))||((board[0][0]!=board[0][1])&& (board[0][0]!='*'&& board[0][1]!='*'))|| ((board[0][1]!=board[0][2])&& (board[0][1]!='*'&& board[0][2]!='*')))&& !moveMade){
+            for(int i=0;i<3;i++){
+               if(board[0][i]=='*'){
+                  board[0][i]='0';
+                  moveMade=true;
+                  break;
+                }
+            }
+        }
+
+        if((((board[1][0]!=board[1][2])&& (board[1][0]!='*'&& board[1][2]!='*'))||((board[1][0]!=board[1][1])&& (board[1][0]!='*'&& board[1][1]!='*'))|| ((board[1][1]!=board[1][2])&& (board[1][1]!='*'&& board[1][2]!='*')))&& !moveMade){
+            for(int i=0;i<3;i++){
+               if(board[1][i]=='*'){
+                  board[1][i]='0';
+                  moveMade=true;
+                  break;
+                }
+            }
+        }
+
+        if((((board[2][0]!=board[2][2])&& (board[2][0]!='*'&& board[2][2]!='*'))||((board[2][0]!=board[2][1])&& (board[2][0]!='*'&& board[2][1]!='*'))|| ((board[2][1]!=board[2][2])&& (board[2][1]!='*'&& board[2][2]!='*')))&& !moveMade){
+             for(int i=0;i<3;i++){
+                if(board[2][i]=='*'){
+                   board[2][i]='0';
+                   moveMade=true;
+                   break;
+                 }
+            }
+        }
+        //check for diagonal condition
+        if(((board[0][0]=='1'&&board[2][2]=='1')||(board[0][2]=='1'&&board[2][0]=='1'))&& !moveMade){
+            for(int i=0;i<3;i++){
+                for(int j=0;j<3;j++){
+                    if(board[i][j]=='*'){
+                        board[i][j]='0';
+                        moveMade=true;
+                        break;
+                    }
+                }
+                if(moveMade==true){
+                    break;
+                }
+            }
+        }
+
+    
+    }
+    for(int i=0;i<3;i++){
+        for(int j=0;j<3;j++){
+            cout<<board[i][j];
+        }
+        cout<<endl;
+    }
+    if(checkrowresult() ){
+            cout<<"Computer won!";
+            exit(0);
+        }
+    if(checkcolresult() ){
+            cout<<"Computer won!";
+            exit(0);
+        }
+    }
+    turns=turns-1;
+    }
+    
+    int check_row =checkrow();
+    if(check_row==0){
+        cout<<"Computer won!"<<endl;
+    }
+    else if(check_row==2){
+        cout<<"Game ended in a draw!"<<endl;
+    }
+    
+}
+}
+int checkrow(){
+    int one=0,zero=0;
+     for(int i=0;i<3;i++){
+        for(int j=0;j<3;j++){
+            if(board[i][j]=='0'){
+                zero+=1;
+            }
+        }
+    }
+    if(zero==3){
+        return 0;
+    }
+    else{
+        return 2;
+    }
+}
+int checkcol(){
+    int one=0,zero=0;
+     for(int i=0;i<3;i++){
+        for(int j=0;j<3;j++){
+            if(board[j][i]=='0'){
+                zero+=1;
+            }
+        }
+    }
+    if(zero==3){
+        return 0;
+    }
+    else{
+        return 2;
+    }
+}
+bool checkrowresult(){
+    if (board[0][0] == board[0][1] && 
+        board[0][1] == board[0][2] && 
+        board[0][0] != '*') {
+        return true;
+    }
+
+
+    if (board[1][0] == board[1][1] && 
+        board[1][1] == board[1][2] && 
+        board[1][0] != '*') {
+        return true;
+    }
+
+  
+    if (board[2][0] == board[2][1] && 
+        board[2][1] == board[2][2] && 
+        board[2][0] != '*') {
+        return true;
+    }
+
+   
+    return false;
+}
+
+
+bool checkcolresult(){
+     if (board[0][0] == board[1][0] && 
+        board[1][0] == board[2][0] && 
+        board[0][0] != '*') {
+        return true;
+    }
+
+    
+    if (board[0][1] == board[1][1] && 
+        board[1][1] == board[2][1] && 
+        board[0][1] != '*') {
+        return true;
+    }
+
+    
+    if (board[0][2] == board[1][2] && 
+        board[1][2] == board[2][2] && 
+        board[0][2] != '*') {
+        return true;
+    }
+
+    
+    return false;
+}
