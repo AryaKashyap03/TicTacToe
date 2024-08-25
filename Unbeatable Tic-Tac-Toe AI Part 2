@@ -7,6 +7,7 @@ int checkrow();
 int checkcol();
 bool checkrowresult();
 bool checkcolresult();
+bool checkdiagresult();
 int main(){
     cout<<"Welcome to my Tic Tac Toe game"<<endl;
     cout<<"Choose hardness Level: Easy or Hard"<<endl;
@@ -33,7 +34,7 @@ int main(){
                 cin>>row>>col;
                 if(board[row][col]!='*'){
                     cout<<"Bhai rules seekh kar aa"<<endl;
-                    exit(1);
+                    exit(0);
                 }
                 cin>>input;
             }
@@ -307,21 +308,8 @@ int main(){
         board[1][1]='0';
         moveMade=true;
         justonce=true;}
-        //preventing two paths for right diagonal
-        if((((board[0][2] != board[1][1]) && (board[0][2] != '*' && board[1][1] != '*')) ||
-         ((board[0][2] != board[2][0]) && (board[0][2] != '*' && board[2][0] != '*')) ||
-         ((board[1][1] != board[2][0]) && (board[1][1] != '*' && board[2][0] != '*'))) && !moveMade) {
-    
-           for(int i = 0; i < 3; i++) {
-             if(board[i][2-i] == '*') {
-               board[i][2-i] = '0';
-               moveMade = true;
-               break;
-             }
-            }
-        }
-         //preventing two paths for left diagonal
-        if((((board[0][0]!=board[1][1])&&(board[0][0]!='*'&&board[1][1]!='*'))||((board[0][0]!=board[2][2])&&(board[0][0]!='*'&&board[2][2]!='*'))||((board[1][1]!=board[2][2])&&(board[1][1]!='*'&&board[2][2]!='*')))&& !moveMade){
+        //if diagonal win is possible for left diagonal
+        if(((board[0][0]==board[1][1]&&board[0][0]=='0'||board[0][0]==board[2][2]&&board[0][0]=='0'||board[1][1]==board[2][2]&&board[1][1]=='0'))&&!moveMade){
             for(int i=0;i<3;i++){
                 if(board[i][i]=='*'){
                     board[i][i]='0';
@@ -330,6 +318,19 @@ int main(){
                 }
             }
         }
+        //if diagonal win is possible for right diagonal
+        if(((board[0][2] == board[1][1] && board[0][2] == '0') ||
+          (board[0][2] == board[2][0] && board[0][2] == '0') ||
+          (board[1][1] == board[2][0] && board[1][1] == '0')) && !moveMade) {
+
+         for(int i = 0; i < 3; i++) {
+            if(board[i][2-i] == '*') {
+            board[i][2-i] = '0';
+            moveMade = true;
+            break;
+            }
+        }
+       }
         //priority checker for rows
        for(int i=0;i<3;i++){
         int j=0;
@@ -446,6 +447,29 @@ int main(){
              }
             }
         }
+        //preventing two paths for right diagonal
+        if((((board[0][2] != board[1][1]) && (board[0][2] != '*' && board[1][1] != '*')) ||
+         ((board[0][2] != board[2][0]) && (board[0][2] != '*' && board[2][0] != '*')) ||
+         ((board[1][1] != board[2][0]) && (board[1][1] != '*' && board[2][0] != '*'))) && !moveMade) {
+    
+           for(int i = 0; i < 3; i++) {
+             if(board[i][2-i] == '*') {
+               board[i][2-i] = '0';
+               moveMade = true;
+               break;
+             }
+            }
+        }
+         //preventing two paths for left diagonal
+        if((((board[0][0]!=board[1][1])&&(board[0][0]!='*'&&board[1][1]!='*'))||((board[0][0]!=board[2][2])&&(board[0][0]!='*'&&board[2][2]!='*'))||((board[1][1]!=board[2][2])&&(board[1][1]!='*'&&board[2][2]!='*')))&& !moveMade){
+            for(int i=0;i<3;i++){
+                if(board[i][i]=='*'){
+                    board[i][i]='0';
+                    moveMade=true;
+                    break;
+                }
+            }
+        }
        
 
         //check for different elements in a row or column
@@ -542,6 +566,10 @@ int main(){
             cout<<"Computer won!";
             exit(0);
         }
+    if(checkdiagresult() ){
+        cout<<"Computer won";
+        exit(0);
+    }
     }
     turns=turns-1;
     }
@@ -636,5 +664,14 @@ bool checkcolresult(){
     }
 
     
+    return false;
+}
+bool checkdiagresult(){
+    if(board[0][0] == '0' && board[1][1] == '0' && board[2][2] == '0'){
+        return true;
+    }
+    if(board[0][2] == '0' && board[1][1] == '0' && board[2][0] == '0'){
+        return true;
+    }
     return false;
 }
