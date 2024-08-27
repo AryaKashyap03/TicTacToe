@@ -13,6 +13,8 @@ int checkcolresult2();
 int checkdiagresult2();
 int main(){
     int gametype;
+    int x =time(0);
+    srand(x);
     cout<<"🌟🌟🌟 Welcome to my Tic Tac Toe game!🌟🌟🌟"<<endl;
     cout<<"1️⃣ Format of playing: 1)Enter row 2)Enter column 3)Enter your input"<<endl;
     cout<<"2️⃣ Rows and Columns are indexed from 0 in this game(e.g.,0 means 1st row or column)"<<endl;
@@ -63,8 +65,6 @@ int main(){
     cout<<"Now my turn"<<endl;
     //case1
     bool moveMade = false;
-    int x =time(0);
-    srand(x);
     int randomvalue= 1+rand()%4;
     if(board[1][1]=='1'){
         if(randomvalue==1&& !firstmove){
