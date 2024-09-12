@@ -16,8 +16,8 @@ int main(){
     int x =time(0);
     srand(x);
     cout<<"🌟🌟🌟 Welcome to my Tic Tac Toe game!🌟🌟🌟"<<endl;
-    cout<<"1️⃣ Format of playing: 1)Enter row 2)Enter column 3)Enter your input"<<endl;
-    cout<<"2️⃣ Rows and Columns are indexed from 0 in this game(e.g.,0 means 1st row or column)"<<endl;
+    cout<<"1️⃣ Format of playing: 1)Enter row 2)Enter column"<<endl;
+    cout<<"2️⃣ Rows and Columns are indexed from 1 in this game e.g.(1 means 1st row or column)"<<endl;
     cout<<"3️⃣ Type 1 for Two Player Mode OR Type 2 to play with AI"<<endl;
     cin>>gametype;
     if(gametype==2){
@@ -36,59 +36,75 @@ int main(){
     bool firstmove = false;
     bool justonce= false;
     while(turns>0){
-    cout<<"Enter row and coloumn and your input:"<<endl;
+    cout<<"Enter row and coloumn :"<<endl;
     cin>>row>>col;
-    if(board[row][col]=='*'){
-                cin>>input;
+    if(row>3 || row<1 || col>3 || col<1){
+        while(1){
+            cout<<"Input valid values of row and column:"<<endl;
+            cin>>row>>col;
+            if(row<4 && row>0 && col<4 && col>0){
+                break;
+            }
+        }
+    }
+
+    if(board[row-1][col-1]=='*'){
+                input='X';
             }
     else{
         cout<<"Input valid values of row and column:"<<endl;
         cin>>row>>col;
-        if(board[row][col]!='*'){
+        if(board[row-1][col-1]!='*'){
                 cout<<"Try again"<<endl;
                 cin>>row>>col;
-                if(board[row][col]!='*'){
+                if(board[row-1][col-1]!='*'){
                     cout<<"Bhai rules seekh kar aa"<<endl;
                     exit(0);
                 }
-                cin>>input;
+                input='X';
             }
     }
-    board[row][col]=input;
+    board[row-1][col-1]=input;
     for(int i=0;i<3;i++){
         for(int j=0;j<3;j++){
             cout<<board[i][j];
+            if(j<2){
+                cout<<" | ";
+            }
         }
         cout<<endl;
+        if(i<2){
+        cout<<"--|---|--"<<endl;}
     }
+    cout<<endl;
     if(turns!=1){
-    cout<<"Now my turn"<<endl;
+    cout<<"Now my turn"<<endl<<endl;
     //case1
     bool moveMade = false;
     int randomvalue= 1+rand()%4;
-    if(board[1][1]=='1'){
+    if(board[1][1]=='X'){
         if(randomvalue==1&& !firstmove){
-            board[0][0]='0';
+            board[0][0]='O';
             firstmove=true;}
         else if(randomvalue==2&& !firstmove){
-            board[0][2]='0';
+            board[0][2]='O';
             firstmove=true;
         }
         else if(randomvalue==3&& !firstmove){
-            board[2][0]='0';
+            board[2][0]='O';
             firstmove=true;
         }
         else if(randomvalue==4&& !firstmove){
-            board[2][2]='0';
+            board[2][2]='O';
             firstmove=true;
         }
         //added priority checker for row combinations
         for(int i=0;i<3;i++){
         int j=0;
-        if((((board[i][j]==board[i][j+2]) && (board[i][j]!='*'&&board[i][j]=='0'))||((board[i][j]==board[i][j+1])&& (board[i][j]!='*'&&board[i][j]=='0'))||((board[i][j+1]==board[i][j+2])&& (board[i][j+1]!='*'&&board[i][j+1]=='0')))&& !moveMade){
+        if((((board[i][j]==board[i][j+2]) && (board[i][j]!='*'&&board[i][j]=='O'))||((board[i][j]==board[i][j+1])&& (board[i][j]!='*'&&board[i][j]=='O'))||((board[i][j+1]==board[i][j+2])&& (board[i][j+1]!='*'&&board[i][j+1]=='O')))&& !moveMade){
         for(int k=0;k<3;k++){
             if(board[i][k]=='*'){
-                board[i][k]='0';
+                board[i][k]='O';
                 moveMade=true;
                 break;
             }
@@ -101,14 +117,14 @@ int main(){
         //priority checker for column combinations
          for(int j = 0; j < 3; j++){
          int i = 0;
-         if((((board[i][j] == board[i+2][j]) && (board[i][j] != '*' && board[i][j] == '0')) ||
-        ((board[i][j] == board[i+1][j]) && (board[i][j] != '*' && board[i][j] == '0')) ||
-        ((board[i+1][j] == board[i+2][j]) && (board[i+1][j] != '*' && board[i+1][j] == '0'))) &&
+         if((((board[i][j] == board[i+2][j]) && (board[i][j] != '*' && board[i][j] == 'O')) ||
+        ((board[i][j] == board[i+1][j]) && (board[i][j] != '*' && board[i][j] == 'O')) ||
+        ((board[i+1][j] == board[i+2][j]) && (board[i+1][j] != '*' && board[i+1][j] == 'O'))) &&
         !moveMade) {
 
         for(int k = 0; k < 3; k++) {
             if(board[k][j] == '*') {
-                board[k][j] = '0';
+                board[k][j] = 'O';
                 moveMade = true;
                 break;
             }
@@ -124,7 +140,7 @@ int main(){
         if((((board[0][0]==board[0][2])&& (board[0][0]!='*'))||((board[0][0]==board[0][1]&& board[0][0]!='*'))||((board[0][1]==board[0][2]&& board[0][1]!='*')))&& !moveMade){
             for(int i=0;i<3;i++){
                 if(board[0][i]=='*'){
-                    board[0][i]='0';
+                    board[0][i]='O';
                     moveMade = true;
                     break;
                 }
@@ -139,7 +155,7 @@ int main(){
            ((board[1][1] == board[1][2]) && (board[1][1] != '*'))) && !moveMade) {
         for (int i = 0; i < 3; i++) {
         if (board[1][i] == '*') {
-            board[1][i] = '0';// pc=1
+            board[1][i] = 'O';// pc=1
             moveMade = true;
             break;
           }
@@ -152,7 +168,7 @@ int main(){
           ((board[2][1] == board[2][2] && board[2][1] != '*'))) && !moveMade) {
         for (int i = 0; i < 3; i++) {
            if (board[2][i] == '*') {
-            board[2][i] = '0';//pc=2
+            board[2][i] = 'O';//pc=2
             moveMade = true;
             break;
             }
@@ -164,7 +180,7 @@ int main(){
          board[1][0] == board[2][0] && board[1][0] != '*') && !moveMade) {
         for (int i = 0; i < 3; i++) {
            if (board[i][0] == '*') {
-            board[i][0] = '0';
+            board[i][0] = 'O';
             moveMade = true;
             break;
             }
@@ -177,7 +193,7 @@ int main(){
           board[1][1] == board[2][1] && board[1][1] != '*') && !moveMade) {
         for (int i = 0; i < 3; i++) {
              if (board[i][1] == '*') {
-                board[i][1] = '0';
+                board[i][1] = 'O';
                 moveMade = true;
                 break;
              }
@@ -191,7 +207,7 @@ int main(){
           board[1][2] == board[2][2] && board[1][2] != '*') && !moveMade) {
          for (int i = 0; i < 3; i++) {
              if (board[i][2] == '*') {
-                board[i][2] = '0';
+                board[i][2] = 'O';
                 moveMade = true;
                 break;
              }
@@ -203,7 +219,7 @@ int main(){
          board[1][1] == board[2][2] && board[1][1] != '*') && !moveMade) {
         for (int i = 0; i < 3; i++) {
             if (board[i][i] == '*') {
-                board[i][i] = '0';
+                board[i][i] = 'O';
                 moveMade = true;
                 break;
             }
@@ -217,7 +233,7 @@ int main(){
          board[1][1] == board[2][0] && board[1][1] != '*') && !moveMade) {
         for (int i = 0; i < 3; i++) {
             if (board[i][2-i] == '*') {
-                board[i][2-i] = '0';
+                board[i][2-i] = 'O';
                 moveMade = true;
                 break;
             }
@@ -226,7 +242,7 @@ int main(){
         if((((board[0][0]!=board[2][0])&& (board[0][0]!='*'&& board[2][0]!='*'))||((board[0][0]!=board[1][0])&& (board[0][0]!='*'&& board[1][0]!='*'))|| ((board[1][0]!=board[2][0])&& (board[1][0]!='*'&& board[2][0]!='*')))&& !moveMade){
             for(int i=0;i<3;i++){
                 if(board[i][0]=='*'){
-                    board[i][0]='0';// 11,UR,22,01,20
+                    board[i][0]='O';// 11,UR,22,01,20
                     moveMade=true;
                     break;
                 }
@@ -238,7 +254,7 @@ int main(){
            ((board[1][1] != board[2][1]) && (board[1][1] != '*' && board[2][1] != '*'))) && !moveMade) {
           for (int i = 0; i < 3; i++) {
              if (board[i][1] == '*') {
-            board[i][1] = '0';
+            board[i][1] = 'O';
             moveMade = true;
             break;
              }
@@ -249,7 +265,7 @@ int main(){
            ((board[1][2] != board[2][2]) && (board[1][2] != '*' && board[2][2] != '*'))) && !moveMade) {
           for (int i = 0; i < 3; i++) {
              if (board[i][2] == '*') {
-               board[i][2] = '0';
+               board[i][2] = 'O';
                moveMade = true;
                break;
              }
@@ -258,7 +274,7 @@ int main(){
         if((((board[0][0]!=board[0][2])&& (board[0][0]!='*'&& board[0][2]!='*'))||((board[0][0]!=board[0][1])&& (board[0][0]!='*'&& board[0][1]!='*'))|| ((board[0][1]!=board[0][2])&& (board[0][1]!='*'&& board[0][2]!='*')))&& !moveMade){
             for(int i=0;i<3;i++){
                if(board[0][i]=='*'){
-                  board[0][i]='0';
+                  board[0][i]='O';
                   moveMade=true;
                   break;
                 }
@@ -268,7 +284,7 @@ int main(){
         if((((board[1][0]!=board[1][2])&& (board[1][0]!='*'&& board[1][2]!='*'))||((board[1][0]!=board[1][1])&& (board[1][0]!='*'&& board[1][1]!='*'))|| ((board[1][1]!=board[1][2])&& (board[1][1]!='*'&& board[1][2]!='*')))&& !moveMade){
             for(int i=0;i<3;i++){
                if(board[1][i]=='*'){
-                  board[1][i]='0';
+                  board[1][i]='O';
                   moveMade=true;
                   break;
                 }
@@ -278,7 +294,7 @@ int main(){
         if((((board[2][0]!=board[2][2])&& (board[2][0]!='*'&& board[2][2]!='*'))||((board[2][0]!=board[2][1])&& (board[2][0]!='*'&& board[2][1]!='*'))|| ((board[2][1]!=board[2][2])&& (board[2][1]!='*'&& board[2][2]!='*')))&& !moveMade){
              for(int i=0;i<3;i++){
                 if(board[2][i]=='*'){
-                   board[2][i]='0';
+                   board[2][i]='O';
                    moveMade=true;
                    break;
                  }
@@ -288,12 +304,12 @@ int main(){
          board[0][0] == board[2][2] && board[0][0] != '*' ||
          board[1][1] == board[2][2] && board[1][1] != '*') && !moveMade) {
              for(int i=0;i<3;i++){
-             if(board[i][i]=='0'){
+             if(board[i][i]=='O'){
                 if(i+i==0){
-                    board[i][2]='0';
+                    board[i][2]='O';
                 }
                 else if(i+i==4){
-                    board[i][0]='0';
+                    board[i][0]='O';
                 }
                 moveMade = true;
                 break;
@@ -305,8 +321,8 @@ int main(){
          board[0][2] == board[2][0] && board[0][2] != '*' ||
          board[1][1] == board[2][0] && board[1][1] != '*') && !moveMade) {
         for (int i = 0; i < 3; i++) {
-                if((board[2][0]=='1'&& board[0][2]=='0')||(board[0][2]=='1'&& board[2][0]=='0' )){
-                    board[2][2]='0';
+                if((board[2][0]=='X'&& board[0][2]=='O')||(board[0][2]=='X'&& board[2][0]=='O' )){
+                    board[2][2]='O';
                     moveMade = true;
                     break;
                 }
@@ -316,29 +332,29 @@ int main(){
        
    
     }
-    else if(board[0][1]=='1'||board[0][0]=='1'||board[0][2]=='1'||board[1][0]=='1'||board[1][2]=='1'||board[2][0]=='1'||board[2][1]=='1'||board[2][2]=='1'){
+    else if(board[0][1]=='X'||board[0][0]=='X'||board[0][2]=='X'||board[1][0]=='X'||board[1][2]=='X'||board[2][0]=='X'||board[2][1]=='X'||board[2][2]=='X'){
        if(!moveMade && !justonce){
-        board[1][1]='0';
+        board[1][1]='O';
         moveMade=true;
         justonce=true;}
         //if diagonal win is possible for left diagonal
-        if(((board[0][0]==board[1][1]&&board[0][0]=='0'||board[0][0]==board[2][2]&&board[0][0]=='0'||board[1][1]==board[2][2]&&board[1][1]=='0'))&&!moveMade){
+        if(((board[0][0]==board[1][1]&&board[0][0]=='O'||board[0][0]==board[2][2]&&board[0][0]=='O'||board[1][1]==board[2][2]&&board[1][1]=='O'))&&!moveMade){
             for(int i=0;i<3;i++){
                 if(board[i][i]=='*'){
-                    board[i][i]='0';
+                    board[i][i]='O';
                     moveMade=true;
                     break;
                 }
             }
         }
         //if diagonal win is possible for right diagonal
-        if(((board[0][2] == board[1][1] && board[0][2] == '0') ||
-          (board[0][2] == board[2][0] && board[0][2] == '0') ||
-          (board[1][1] == board[2][0] && board[1][1] == '0')) && !moveMade) {
+        if(((board[0][2] == board[1][1] && board[0][2] == 'O') ||
+          (board[0][2] == board[2][0] && board[0][2] == 'O') ||
+          (board[1][1] == board[2][0] && board[1][1] == 'O')) && !moveMade) {
 
          for(int i = 0; i < 3; i++) {
             if(board[i][2-i] == '*') {
-            board[i][2-i] = '0';
+            board[i][2-i] = 'O';
             moveMade = true;
             break;
             }
@@ -347,10 +363,10 @@ int main(){
         //priority checker for rows
        for(int i=0;i<3;i++){
         int j=0;
-        if((((board[i][j]==board[i][j+2]) && (board[i][j]!='*'&&board[i][j]=='0'))||((board[i][j]==board[i][j+1])&& (board[i][j]!='*'&&board[i][j]=='0'))||((board[i][j+1]==board[i][j+2])&& (board[i][j+1]!='*'&&board[i][j+1]=='0')))&& !moveMade){
+        if((((board[i][j]==board[i][j+2]) && (board[i][j]!='*'&&board[i][j]=='O'))||((board[i][j]==board[i][j+1])&& (board[i][j]!='*'&&board[i][j]=='O'))||((board[i][j+1]==board[i][j+2])&& (board[i][j+1]!='*'&&board[i][j+1]=='O')))&& !moveMade){
         for(int k=0;k<3;k++){
             if(board[i][k]=='*'){
-                board[i][k]='0';
+                board[i][k]='O';
                 moveMade=true;
                 break;
             }
@@ -363,14 +379,14 @@ int main(){
     //priority checker for columns
     for(int j = 0; j < 3; j++){
          int i = 0;
-         if((((board[i][j] == board[i+2][j]) && (board[i][j] != '*' && board[i][j] == '0')) ||
-        ((board[i][j] == board[i+1][j]) && (board[i][j] != '*' && board[i][j] == '0')) ||
-        ((board[i+1][j] == board[i+2][j]) && (board[i+1][j] != '*' && board[i+1][j] == '0'))) &&
+         if((((board[i][j] == board[i+2][j]) && (board[i][j] != '*' && board[i][j] == 'O')) ||
+        ((board[i][j] == board[i+1][j]) && (board[i][j] != '*' && board[i][j] == 'O')) ||
+        ((board[i+1][j] == board[i+2][j]) && (board[i+1][j] != '*' && board[i+1][j] == 'O'))) &&
         !moveMade) {
 
         for(int k = 0; k < 3; k++) {
             if(board[k][j] == '*') {
-                board[k][j] = '0';
+                board[k][j] = 'O';
                 moveMade = true;
                 break;
             }
@@ -387,7 +403,7 @@ int main(){
      if((((board[0][0]==board[0][2])&& (board[0][0]!='*'))||((board[0][0]==board[0][1]&& board[0][0]!='*'))||((board[0][1]==board[0][2]&& board[0][1]!='*')))&& !moveMade){
             for(int i=0;i<3;i++){
                 if(board[0][i]=='*'){
-                    board[0][i]='0';
+                    board[0][i]='O';
                     moveMade = true;
                     break;
                 }
@@ -402,7 +418,7 @@ int main(){
            ((board[1][1] == board[1][2]) && (board[1][1] != '*'))) && !moveMade) {
         for (int i = 0; i < 3; i++) {
         if (board[1][i] == '*') {
-            board[1][i] = '0';// pc=1
+            board[1][i] = 'O';// pc=1
             moveMade = true;
             break;
           }
@@ -415,7 +431,7 @@ int main(){
           ((board[2][1] == board[2][2] && board[2][1] != '*'))) && !moveMade) {
         for (int i = 0; i < 3; i++) {
            if (board[2][i] == '*') {
-            board[2][i] = '0';//pc=2
+            board[2][i] = 'O';//pc=2
             moveMade = true;
             break;
             }
@@ -427,7 +443,7 @@ int main(){
          board[1][0] == board[2][0] && board[1][0] != '*') && !moveMade) {
         for (int i = 0; i < 3; i++) {
            if (board[i][0] == '*') {
-            board[i][0] = '0';
+            board[i][0] = 'O';
             moveMade = true;
             break;
             }
@@ -440,7 +456,7 @@ int main(){
           board[1][1] == board[2][1] && board[1][1] != '*') && !moveMade) {
         for (int i = 0; i < 3; i++) {
              if (board[i][1] == '*') {
-                board[i][1] = '0';
+                board[i][1] = 'O';
                 moveMade = true;
                 break;
              }
@@ -454,7 +470,7 @@ int main(){
           board[1][2] == board[2][2] && board[1][2] != '*') && !moveMade) {
          for (int i = 0; i < 3; i++) {
              if (board[i][2] == '*') {
-                board[i][2] = '0';
+                board[i][2] = 'O';
                 moveMade = true;
                 break;
              }
@@ -467,7 +483,7 @@ int main(){
    
            for(int i = 0; i < 3; i++) {
              if(board[i][2-i] == '*') {
-               board[i][2-i] = '0';
+               board[i][2-i] = 'O';
                moveMade = true;
                break;
              }
@@ -477,7 +493,7 @@ int main(){
         if((((board[0][0]!=board[1][1])&&(board[0][0]!='*'&&board[1][1]!='*'))||((board[0][0]!=board[2][2])&&(board[0][0]!='*'&&board[2][2]!='*'))||((board[1][1]!=board[2][2])&&(board[1][1]!='*'&&board[2][2]!='*')))&& !moveMade){
             for(int i=0;i<3;i++){
                 if(board[i][i]=='*'){
-                    board[i][i]='0';
+                    board[i][i]='O';
                     moveMade=true;
                     break;
                 }
@@ -489,7 +505,7 @@ int main(){
         if((((board[0][0]!=board[2][0])&& (board[0][0]!='*'&& board[2][0]!='*'))||((board[0][0]!=board[1][0])&& (board[0][0]!='*'&& board[1][0]!='*'))|| ((board[1][0]!=board[2][0])&& (board[1][0]!='*'&& board[2][0]!='*')))&& !moveMade){
             for(int i=0;i<3;i++){
                 if(board[i][0]=='*'){
-                    board[i][0]='0';// 11,UR,22,01,20
+                    board[i][0]='O';// 11,UR,22,01,20
                     moveMade=true;
                     break;
                 }
@@ -501,7 +517,7 @@ int main(){
            ((board[1][1] != board[2][1]) && (board[1][1] != '*' && board[2][1] != '*'))) && !moveMade) {
           for (int i = 0; i < 3; i++) {
              if (board[i][1] == '*') {
-            board[i][1] = '0';
+            board[i][1] = 'O';
             moveMade = true;
             break;
              }
@@ -512,7 +528,7 @@ int main(){
            ((board[1][2] != board[2][2]) && (board[1][2] != '*' && board[2][2] != '*'))) && !moveMade) {
           for (int i = 0; i < 3; i++) {
              if (board[i][2] == '*') {
-               board[i][2] = '0';
+               board[i][2] = 'O';
                moveMade = true;
                break;
              }
@@ -521,7 +537,7 @@ int main(){
         if((((board[0][0]!=board[0][2])&& (board[0][0]!='*'&& board[0][2]!='*'))||((board[0][0]!=board[0][1])&& (board[0][0]!='*'&& board[0][1]!='*'))|| ((board[0][1]!=board[0][2])&& (board[0][1]!='*'&& board[0][2]!='*')))&& !moveMade){
             for(int i=0;i<3;i++){
                if(board[0][i]=='*'){
-                  board[0][i]='0';
+                  board[0][i]='O';
                   moveMade=true;
                   break;
                 }
@@ -531,7 +547,7 @@ int main(){
         if((((board[1][0]!=board[1][2])&& (board[1][0]!='*'&& board[1][2]!='*'))||((board[1][0]!=board[1][1])&& (board[1][0]!='*'&& board[1][1]!='*'))|| ((board[1][1]!=board[1][2])&& (board[1][1]!='*'&& board[1][2]!='*')))&& !moveMade){
             for(int i=0;i<3;i++){
                if(board[1][i]=='*'){
-                  board[1][i]='0';
+                  board[1][i]='O';
                   moveMade=true;
                   break;
                 }
@@ -541,18 +557,18 @@ int main(){
         if((((board[2][0]!=board[2][2])&& (board[2][0]!='*'&& board[2][2]!='*'))||((board[2][0]!=board[2][1])&& (board[2][0]!='*'&& board[2][1]!='*'))|| ((board[2][1]!=board[2][2])&& (board[2][1]!='*'&& board[2][2]!='*')))&& !moveMade){
              for(int i=0;i<3;i++){
                 if(board[2][i]=='*'){
-                   board[2][i]='0';
+                   board[2][i]='O';
                    moveMade=true;
                    break;
                  }
             }
         }
         //check for diagonal condition
-        if(((board[0][0]=='1'&&board[2][2]=='1')||(board[0][2]=='1'&&board[2][0]=='1'))&& !moveMade){
+        if(((board[0][0]=='X'&&board[2][2]=='X')||(board[0][2]=='X'&&board[2][0]=='X'))&& !moveMade){
             for(int i=0;i<3;i++){
                 for(int j=0;j<3;j++){
                     if(board[i][j]=='*'){
-                        board[i][j]='0';
+                        board[i][j]='O';
                         moveMade=true;
                         break;
                     }
@@ -568,9 +584,15 @@ int main(){
     for(int i=0;i<3;i++){
         for(int j=0;j<3;j++){
             cout<<board[i][j];
+            if(j<2){
+                cout<<" | ";
+            }
         }
         cout<<endl;
+        if(i<2){
+        cout<<"--|---|--"<<endl;}
     }
+    cout<<endl;
     if(checkrowresult() ){
             cout<<"AI won!";
             exit(0);
@@ -601,11 +623,20 @@ else if(level=="easy"){
     char input;
     turns=5;
     while(turns>0){
-    cout<<"Enter row and coloumn and your input:"<<endl;
+    cout<<"Enter row and coloumn :"<<endl;
     cin>>row>>col;
+    if(row>3 || row<1 || col>3 || col<1){
+        while(1){
+            cout<<"Input valid values of row and column:"<<endl;
+            cin>>row>>col;
+            if(row<4 && row>0 && col<4 && col>0){
+                break;
+            }
+        }
+    }
     while(1){
-    if(board[row][col]=='*'){
-                cin>>input;
+    if(board[row-1][col-1]=='*'){
+                input='X';
                 break;
             }
     else{
@@ -613,13 +644,19 @@ else if(level=="easy"){
         cin>>row>>col;
     }   
     }
-    board[row][col]='1';
+    board[row-1][col-1]=input;
     for(int i=0;i<3;i++){
         for(int j=0;j<3;j++){
             cout<<board[i][j];
+            if(j<2){
+                cout<<" | ";
+            }
         }
         cout<<endl;
+        if(i<2){
+        cout<<"--|---|--"<<endl;}
     }
+    cout<<endl;
     if(checkrowresult2()==1 ||checkcolresult2()==1 ||checkdiagresult2()==1){
             cout<<"You won!";
             exit(0);
@@ -629,12 +666,12 @@ else if(level=="easy"){
         cout<<"Game ended in a draw!!"<<endl;
         exit(0);
     }
-    cout<<"Now my turn: "<<endl;
+    cout<<"Now my turn: "<<endl<<endl;
     while(1){
     int randomrow=rand()%3;
     int randomcol=rand()%3;
         if(board[randomrow][randomcol]=='*'){
-            board[randomrow][randomcol]='0';
+            board[randomrow][randomcol]='O';
             break;
         }
         
@@ -642,9 +679,15 @@ else if(level=="easy"){
     for(int i=0;i<3;i++){
         for(int j=0;j<3;j++){
             cout<<board[i][j];
+            if(j<2){
+                cout<<" | ";
+            }
         }
         cout<<endl;
+        if(i<2){
+        cout<<"--|---|--"<<endl;}
     }
+    cout<<endl;
     if(checkrowresult2()==0 ||checkcolresult2()==0 ||checkdiagresult2()==0 ){
             cout<<"AI won!";
             exit(0);
@@ -660,9 +703,18 @@ else if(gametype==1){
     while(turns>0){
     cout<<"1st Player's turn:"<<endl;
     cin>>row>>col;
+    if(row>3 || row<1 || col>3 || col<1){
+        while(1){
+            cout<<"Input valid values of row and column:"<<endl;
+            cin>>row>>col;
+            if(row<4 && row>0 && col<4 && col>0){
+                break;
+            }
+        }
+    }
     while(1){
-        if(board[row][col]=='*'){
-            cin>>input;
+        if(board[row-1][col-1]=='*'){
+            input='X';
             break;
         }
         else{
@@ -670,13 +722,19 @@ else if(gametype==1){
             cin>>row>>col;
         }
     }
-    board[row][col]=input;
+    board[row-1][col-1]=input;
     for(int i=0;i<3;i++){
         for(int j=0;j<3;j++){
             cout<<board[i][j];
+            if(j<2){
+                cout<<" | ";
+            }
         }
         cout<<endl;
+        if(i<2){
+        cout<<"--|---|--"<<endl;}
     }
+    cout<<endl;
     if(checkrowresult2()==1 ||checkcolresult2()==1 ||checkdiagresult2()==1){
             cout<<"Player 1 won!";
             exit(0);
@@ -689,9 +747,18 @@ else if(gametype==1){
    
     cout<<"2nd Player's turn"<<endl;
     cin>>row2>>col2;
+    if(row2>3 || row2<1 || col2>3 || col2<1){
+        while(1){
+            cout<<"Input valid values of row and column:"<<endl;
+            cin>>row2>>col2;
+            if(row2<4 && row2>0 && col2<4 && col2>0){
+                break;
+            }
+        }
+    }
     while(1){
-        if(board[row2][col2]=='*'){
-            cin>>input2;
+        if(board[row2-1][col2-1]=='*'){
+            input2='O';
             break;
         }
         else{
@@ -699,13 +766,19 @@ else if(gametype==1){
             cin>>row2>>col2;
         }
     }
-    board[row2][col2]=input2;
+    board[row2-1][col2-1]=input2;
     for(int i=0;i<3;i++){
         for(int j=0;j<3;j++){
             cout<<board[i][j];
+            if(j<2){
+                cout<<" | ";
+            }
         }
         cout<<endl;
+        if(i<2){
+        cout<<"--|---|--"<<endl;}
     }
+    cout<<endl;
     if(checkrowresult2()==0 ||checkcolresult2()==0 ||checkdiagresult2()==0 ){
             cout<<"Player 2 won!";
             exit(0);
@@ -719,7 +792,7 @@ int checkrow(){
     int one=0,zero=0;
      for(int i=0;i<3;i++){
         for(int j=0;j<3;j++){
-            if(board[i][j]=='0'){
+            if(board[i][j]=='O'){
                 zero+=1;
             }
         }
@@ -735,7 +808,7 @@ int checkcol(){
     int one=0,zero=0;
      for(int i=0;i<3;i++){
         for(int j=0;j<3;j++){
-            if(board[j][i]=='0'){
+            if(board[j][i]=='O'){
                 zero+=1;
             }
         }
@@ -798,10 +871,10 @@ bool checkcolresult(){
     return false;
 }
 bool checkdiagresult(){
-    if(board[0][0] == '0' && board[1][1] == '0' && board[2][2] == '0'){
+    if(board[0][0] == 'O' && board[1][1] == 'O' && board[2][2] == 'O'){
         return true;
     }
-    if(board[0][2] == '0' && board[1][1] == '0' && board[2][0] == '0'){
+    if(board[0][2] == 'O' && board[1][1] == 'O' && board[2][0] == 'O'){
         return true;
     }
     return false;
@@ -811,7 +884,7 @@ int checkrowresult2(){
         if (board[i][0] == board[i][1] &&
             board[i][1] == board[i][2] &&
             board[i][0] != '*') {
-            if (board[i][0] == '1') {
+            if (board[i][0] == 'X') {
                 return 1;
             } else {
                 return 0;
@@ -825,7 +898,7 @@ int checkcolresult2() {
         if (board[0][i] == board[1][i] &&
             board[1][i] == board[2][i] &&
             board[0][i] != '*') {
-            if (board[0][i] == '1') {
+            if (board[0][i] == 'X') {
                 return 1;
             } else {
                 return 0;
@@ -835,16 +908,16 @@ int checkcolresult2() {
     return 2;
 }
 int checkdiagresult2(){
-    if(board[0][0] == '0' && board[1][1] == '0' && board[2][2] == '0'){
+    if(board[0][0] == 'O' && board[1][1] == 'O' && board[2][2] == 'O'){
         return 0;
     }
-    if(board[0][0] == '1' && board[1][1] == '1' && board[2][2] == '1'){
+    if(board[0][0] == 'X' && board[1][1] == 'X' && board[2][2] == 'X'){
         return 1;
     }
-    if(board[0][2] == '0' && board[1][1] == '0' && board[2][0] == '0'){
+    if(board[0][2] == 'O' && board[1][1] == 'O' && board[2][0] == 'O'){
         return 0;
     }
-    if(board[0][2] == '1' && board[1][1] == '1' && board[2][0] == '1'){
+    if(board[0][2] == 'X' && board[1][1] == 'X' && board[2][0] == 'X'){
         return 1;
     }
     return 2;
